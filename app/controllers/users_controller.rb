@@ -13,9 +13,9 @@ class UsersController < ApplicationController
   
   def edit
     @user = User.find(params[:id])
-    if logged_in?
+    if session[:user_id] == @user.id
     else
-      redirect_to "./sessions/new.html"
+      render "show"
     end
   end
   
