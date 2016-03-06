@@ -15,11 +15,12 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     if logged_in?
     else
-      render "new"
+      redirect_to "./sessions/new.html"
     end
   end
   
   def update
+    @user = User.find(params[:id])
     if @user.update(user_params)
       redirect_to @user
     else
@@ -40,6 +41,6 @@ class UsersController < ApplicationController
   
   private
   def user_params
-    params.require(:user).permit(:name, :email, :password, :password_confirmation)
+    params.require(:user).permit(:name, :email, :password, :password_confirmation, :country, :profile)
   end
 end
