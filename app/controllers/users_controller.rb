@@ -1,5 +1,7 @@
 class UsersController < ApplicationController
   protect_from_forgery with: :exception
+  before_action :current_user, only: [:edit, :update] 
+  
   include SessionsHelper
   
   def show
@@ -21,8 +23,12 @@ class UsersController < ApplicationController
   
   def update
     @user = User.find(params[:id])
-    if @user.update(user_params)
-      redirect_to @user
+    if @current_user.id == @user.id
+      if @user.update(user_params)
+        redirect_to @user
+      else
+       render "edit"
+      end
     else
       render "edit"
     end
