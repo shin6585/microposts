@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   protect_from_forgery with: :exception
-  before_action :current_user, only: [:edit, :update] 
+  
   
   include SessionsHelper
   
@@ -23,7 +23,7 @@ class UsersController < ApplicationController
   
   def update
     @user = User.find(params[:id])
-    if @current_user.id == @user.id
+    if session[:user_id] == @user.id
       if @user.update(user_params)
         redirect_to @user
       else
