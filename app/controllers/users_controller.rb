@@ -1,8 +1,4 @@
 class UsersController < ApplicationController
-  protect_from_forgery with: :exception
-  
-  
-  include SessionsHelper
   
   def show
     @user = User.find(params[:id])
@@ -25,7 +21,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     if session[:user_id] == @user.id
       if @user.update(user_params)
-        redirect_to @user
+        action_success
       else
        render "edit"
       end
@@ -48,5 +44,9 @@ class UsersController < ApplicationController
   private
   def user_params
     params.require(:user).permit(:name, :email, :password, :password_confirmation, :country, :profile)
+  end
+  
+  def action_success
+    redirect_to @user, flash: {success: 'Yes!! Success'}
   end
 end
