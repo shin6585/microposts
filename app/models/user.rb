@@ -12,6 +12,8 @@ class User < ActiveRecord::Base
                                      foreign_key: "follower_id",
                                      dependent:   :destroy
   has_many :following_users, through: :following_relationships, source: :followed
+  validates :country, length: { maximum: 50 }
+  validates :profile, length: { maximum: 150 }
 
   # 他のユーザーをフォローする
   def follow(other_user)
@@ -28,4 +30,5 @@ class User < ActiveRecord::Base
   def following?(other_user)
     following_users.include?(other_user)
   end
+  
 end
