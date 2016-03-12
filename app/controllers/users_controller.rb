@@ -1,7 +1,9 @@
 class UsersController < ApplicationController
+  before_action :set_user,  only: [:show, :edit, :update]
+  before_action :logged_in_user, only: [:show, :edit, :update]
+  before_action :authenticate!, only: [:edit, :update]
   
   def show
-    @user = User.find(params[:id])
     @microposts = @user.microposts.order(created_at: :desc)
   end
   
@@ -10,23 +12,13 @@ class UsersController < ApplicationController
   end
   
   def edit
-    @user = User.find(params[:id])
-    if session[:user_id] == @user.id
-    else
-      render "show"
-    end
   end
   
   def update
-    @user = User.find(params[:id])
-    if session[:user_id] == @user.id
-      if @user.update(user_params)
-        action_success
-      else
-       render "edit"
-      end
+    if @user.update(user_params)
+      action_success
     else
-      render "edit"
+     render "edit"
     end
   end
   
@@ -41,12 +33,34 @@ class UsersController < ApplicationController
     end
   end
   
+  
   private
+
+  # get parameters for sinup
   def user_params
-    params.require(:user).permit(:name, :email, :password, :password_confirmation, :country, :profile)
+    params.require(:user).permit(:name, :email, :password, :password_confirmation)
+  end
+
+  # get parameters for profile editing
+  def user_profile
+    params.require(:user).permit(:name, :email, :profile, :country, :password, :password_confirmation)
+  end
+
+  # get a user instance with :id parameter
+  def set_user
+    @user = User.find(params[:id])
+  end
+
+  # check current_user is editing self ?
+  def authenticate!
+    if @user != current_user
+      redirect_to root_url, flash: { danger: "不正なアクセス" }
+    end
   end
   
   def action_success
     redirect_to @user, flash: {success: 'Yes!! Success'}
   end
+  
+  
 end
