@@ -190,13 +190,17 @@ span.picture {
   }
 }
 
-.user_show {
-  height: 55px;
-  margin: 2px;
-  
-  .user .user_name {
-    margin-left: 5px;
-  }  
 
+.following_or_follower_users {
+  list-style: none;
+  padding: 0;
+  .user_show {
+    height: 55px;
+    margin: 2px;
+    
+    .user .user_name {
+      margin-left: 5px;
+    }  
+  }
 }
 
