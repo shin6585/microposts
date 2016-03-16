@@ -19,7 +19,13 @@ class User < ActiveRecord::Base
   has_many :follower_users, through: :follower_relationships, source: :follower
   validates :country, length: { maximum: 50 }
   validates :profile, length: { maximum: 150 }
-
+  
+  #お気に入り
+  has_many :favorite_relations, class_name: "FavoriteRelation",
+                                foreign_key: "user_id",
+                                dependent: :destroy
+  has_many :favorite_microposts, through: :favorite_relations, source: :micropost
+  
   # 他のユーザーをフォローする
   def follow(other_user)
     following_relationships.find_or_create_by(followed_id: other_user.id)
@@ -35,5 +41,26 @@ class User < ActiveRecord::Base
   def following?(other_user)
     following_users.include?(other_user)
   end
+  
+  #メッセージをお気に入り登録する
+  def fav(micropost)
+    favorite_relations.find_or_create_by(micropost_id: micropost.id)
+  end
+  
+  #お気に入り解除
+  def unfav(micropost)
+    favorite_relation = favorite_relations.find_by(micropost_id: micropost.id)
+    favorite_relation.destroy if favorite_relation
+  end
+  
+  #お気に入りしているかどうか？
+  def fav?(micropost)
+    favorite_microposts.include?(micropost)
+  end
+  
+  def feed_items
+    Micropost.where(user_id: following_user_ids + [self.id])
+  end
+  
   
 end

@@ -7,8 +7,9 @@
       </h1>
       <h1>country:<%= @user.country %></h1>
       <p><%= @user.profile %></p>
-      <%= link_to "followers", follower_user_path(@user.id), class: "btn btn-info", type:"button"%>
-      <%= link_to "followings", following_user_path(@user.id),class: "btn btn-info", type:"button"  %>
+      <%= link_to "followers", follower_user_path(@user.id), class: "btn btn-info btn-sm", type:"button"%>
+      <%= link_to "followings", following_user_path(@user.id),class: "btn btn-info btn-sm", type:"button"  %>
+      <%= link_to "favs", favorite_micropost_path(@user.id),class: "btn btn-info btn-sm", type:"button"%>
     </section>
   </aside>
   <div class="col-md-8">

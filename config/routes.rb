@@ -18,5 +18,7 @@ Rails.application.routes.draw do
   resources :relationships, only: [:create, :destroy]
   resources :following_users, only: [:show]
   resources :follower_users, only: [:show]
+  resources :favorite_relations, only: [:create, :destroy]
+  resources :favorite_microposts, only: [:show]
 
 end

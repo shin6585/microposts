@@ -3,6 +3,7 @@ class UsersController < ApplicationController
   before_action :logged_in_user, only: [:show, :edit, :update]
   before_action :authenticate!, only: [:edit, :update]
   
+  
   def show
     @microposts = @user.microposts.order(created_at: :desc)
   end
@@ -33,12 +34,14 @@ class UsersController < ApplicationController
     end
   end
   
-<<<<<<< HEAD
   def feed_items
     Micropost.where(user_id: following_user_ids + [self.id])
   end
-=======
->>>>>>> user-profile
+  
+  def favorite_microposts
+    Micropost.where(user_id: user_params[:id])
+  end
+
   
   private
 
